@@ -1,14 +1,7 @@
 import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { pricePerItem } from '../constants';
+import {formatCurrency} from '../utilities';
 
-//format number as currency
-function formatCurrency(amount){
-    return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 2,
-    }).format(amount)
-}
 
 const OrderDetails = createContext();
 
@@ -46,7 +39,10 @@ export function OrderDetailsProvider(props) {
         toppings: zeroCurrency,
         grandTotal: zeroCurrency,
     })
-    // a useEffect to uodate total
+   
+
+
+    // a useEffect to update total
     useEffect(() => {
         //we define intermediate subTotal (like the total state) with the same function
         const scoopsSubtotal = calculateSubtotal("scoops", optionCounts);
@@ -76,10 +72,16 @@ export function OrderDetailsProvider(props) {
             setOptioncounts(newOptionCounts)
 
         }
+        function resetOrder(){
+            setOptioncounts({
+                scoops:new Map(),
+                toppings: new Map(),
+            })
+        }
         //getter : object containing options component counts for scoops and toppings, subtotal, total (spreading the state {...optionCounts})
         //setter : update options count the setter will be a function.
         // need to return total
-        return [{ ...optionCounts, totals }, updateItemCount];
+        return [{ ...optionCounts, totals }, updateItemCount, resetOrder];
     }, [optionCounts, totals])
 
     return <OrderDetails.Provider value={value}{...props} />;

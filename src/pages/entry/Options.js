@@ -6,6 +6,7 @@ import ToppingOption from './ToppingOption';
 import AlertBanner from '../common/AlertBanner';
 import {pricePerItem} from '../../constants';
 import { useOrderDetails} from '../../context/OrderDetails'
+import {formatCurrency} from '../../utilities'
 
 
 
@@ -13,6 +14,7 @@ export default function Options({ optionType }) {
     const [items, setItems] = useState([]);
     const [error, setError] = useState(false)
     const [orderDetails, updateItemCount] = useOrderDetails();
+    //console.log(orderDetails)
 
     // optionType is 'scoops' or 'toppings'
     useEffect(() => {
@@ -38,13 +40,15 @@ export default function Options({ optionType }) {
         />
     ));
 
-    return (
-        <>
+    return (      
+        <div>
             <h2>{title}</h2>
-            <p>{pricePerItem[optionType]} each</p>
+            <p>{formatCurrency(pricePerItem[optionType])} each</p>
             <p>{title} total: {orderDetails.totals[optionType]}</p>
-            <Row>{optionItems}</Row>;
-        </>
+            <Row>{optionItems}</Row>
+        </div>
+        
+        
     )
 
 }
