@@ -23,6 +23,7 @@ export default function OrderConfirmation({ setOrderPhase }) {
 
     if (error) {
         return <AlertBanner />;
+        console.log(AlertBanner);
     }
     function handleClick() {
         resetOrder()

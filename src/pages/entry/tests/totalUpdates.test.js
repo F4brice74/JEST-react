@@ -27,6 +27,28 @@ test('update scoop subtotal when scoops change', async () => {
     expect(scoopSubtotal).toHaveTextContent('6.00')
 })
 
+test('no update scoop subtotal if invalid input', async ()=>{
+    render(<Options optionType="scoops" />);
+    // define input
+    const vanillaInput= await screen.findByRole('spinbutton', {name: 'Vanilla'})
+     //defin subtotal
+    const scoopSubtotal = screen.getByText('Scoops total: $', { exact: false })
+
+    //input to -1
+    userEvent.clear(vanillaInput)
+    userEvent.type(vanillaInput, '-1')
+    
+    //subtotal is zero
+    expect(scoopSubtotal).toHaveTextContent('0.00')
+
+    //input to 11 
+    userEvent.clear(vanillaInput)
+    userEvent.type(vanillaInput, '11')
+
+    // subtotal is zero
+    expect(scoopSubtotal).toHaveTextContent('0.00')
+})
+
 // test for toppings
 
 test('update toppings total when toppings change', async () => {
